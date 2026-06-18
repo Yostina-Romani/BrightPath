@@ -1,0 +1,169 @@
+﻿@model Course
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma;
+        background: radial-gradient(circle at top left, #38bdf8, transparent 40%), radial-gradient(circle at bottom right, #f9a8d4, transparent 45%), linear-gradient(135deg,#0b1220,#0f172a);
+        color: #e2e8f0;
+    }
+
+    .page-container {
+        max-width: 700px;
+        margin: 60px auto;
+        padding: 20px;
+    }
+
+    .card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(125,211,252,0.2);
+        backdrop-filter: blur(14px);
+        border-radius: 22px;
+        padding: 30px;
+        box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+        transition: .3s;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .icon {
+        text-align: center;
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 900;
+        margin-bottom: 25px;
+        color: #fbcfe8;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(125,211,252,0.3);
+        background: rgba(255,255,255,0.05);
+        color: white;
+        outline: none;
+        font-size: 14px;
+        transition: .3s;
+    }
+
+        .form-control:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 12px rgba(56,189,248,0.4);
+        }
+
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+
+    select.form-control {
+        background: rgba(255,255,255,0.05);
+        color: white;
+    }
+
+    .error {
+        color: #fca5a5;
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 14px;
+        background: linear-gradient(135deg,#38bdf8,#f9a8d4);
+        color: white;
+        font-size: 16px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: .3s;
+        margin-top: 10px;
+    }
+
+        .btn-submit:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(249,168,212,0.25);
+        }
+</style>
+
+<div class="page-container">
+
+    <div class="card">
+
+        <div class="icon">📚</div>
+        <div class="title">Add New Course</div>
+
+        <form method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <input class="form-control"
+                       asp-for="courseName"
+                       placeholder="Course Name" />
+                <span class="error" asp-validation-for="courseName"></span>
+            </div>
+
+            <div class="form-group">
+                <input class="form-control"
+                       type="file"
+                       name="courseImage" />
+            </div>
+
+            <div class="form-group">
+                <input class="form-control"
+                       asp-for="courseDescription"
+                       placeholder="Course Description" />
+                <span class="error" asp-validation-for="courseDescription"></span>
+            </div>
+
+            <div class="form-group">
+                <input class="form-control"
+                       asp-for="teacherName"
+                       placeholder="Teacher Name" />
+                <span class="error" asp-validation-for="teacherName"></span>
+            </div>
+
+            <div class="form-group">
+                <select asp-for="gradeId"
+                        asp-items="ViewBag.grades"
+                        class="form-control">
+                    <option value="">-- Select Grade --</option>
+                </select>
+                <span class="error" asp-validation-for="gradeId"></span>
+            </div>
+
+            <div class="form-group">
+                <input class="form-control"
+                       type="number"
+                       step="0.01"
+                       asp-for="coursePrice"
+                       placeholder="Course Price" />
+                <span class="error" asp-validation-for="coursePrice"></span>
+            </div>
+
+            <button class="btn-submit" type="submit">
+                🚀 Add Course
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,244 @@
+﻿@model List<BrightPath.Models.Course>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma;
+        background: #0b1220;
+        color: #e2e8f0;
+    }
+
+    .page {
+        max-width: 1200px;
+        margin: auto;
+        padding: 40px 20px;
+    }
+
+    /* HEADER */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 35px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .title {
+        font-size: 34px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #38bdf8, #f9a8d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        color: #94a3b8;
+        margin-top: 5px;
+    }
+
+    /* ADD BUTTON */
+    .add-btn {
+        background: linear-gradient(135deg, #38bdf8, #f9a8d4);
+        color: white;
+        padding: 12px 18px;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 10px 25px rgba(56,189,248,0.25);
+        transition: 0.3s;
+    }
+
+        .add-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(249,168,212,0.25);
+        }
+
+    /* GRID */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    /* CARD */
+    .card {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(56,189,248,0.2);
+        border-radius: 22px;
+        overflow: hidden;
+        transition: 0.4s;
+        backdrop-filter: blur(10px);
+    }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px rgba(249,168,212,0.15);
+            border-color: rgba(249,168,212,0.4);
+        }
+
+        /* IMAGE */
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .card:hover img {
+            transform: scale(1.08);
+        }
+
+    .content {
+        padding: 16px;
+    }
+
+    .course-name {
+        font-size: 18px;
+        font-weight: 800;
+        color: #fbcfe8;
+        margin-bottom: 6px;
+    }
+
+    .desc {
+        font-size: 13px;
+        color: #cbd5e1;
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+
+    .price {
+        font-weight: 800;
+        color: #38bdf8;
+        margin-bottom: 12px;
+    }
+
+    /* BUTTONS */
+    .btns {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 8px 12px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .view {
+        background: linear-gradient(135deg, #38bdf8, #3b82f6);
+        color: white;
+    }
+
+    .edit {
+        background: linear-gradient(135deg, #f9a8d4, #ec4899);
+        color: white;
+    }
+
+    .delete {
+        background: linear-gradient(135deg, #ef4444, #f97316);
+        color: white;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+    }
+
+    /* BADGE */
+    .badge {
+        position: absolute;
+        margin: 10px;
+        background: linear-gradient(135deg, #38bdf8, #f9a8d4);
+        padding: 5px 10px;
+        font-size: 11px;
+        border-radius: 999px;
+        font-weight: 700;
+        color: white;
+    }
+
+</style>
+
+<div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div>
+            <div class="title">📚 Courses Dashboard</div>
+            <div class="subtitle">Manage your courses with a modern experience</div>
+        </div>
+
+        <a asp-controller="Course"
+           asp-action="AddCourse"
+           class="add-btn">
+            ➕ Add Course
+        </a>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+
+        @foreach (var course in Model)
+        {
+            <div class="card">
+
+                @if (!string.IsNullOrEmpty(course.courseImage))
+                {
+                    <img src="@course.courseImage" />
+                }
+
+                <div class="content">
+
+                    <div class="course-name">@course.courseName</div>
+
+                    <div class="desc">
+                        @course.courseDescription
+                    </div>
+
+                    <div class="price">
+                        💰 @course.coursePrice EGP
+                    </div>
+
+                    <div class="btns">
+
+                        <a asp-action="CourseDetails"
+                           asp-controller="Course"
+                           asp-route-id="@course.courseId"
+                           class="btn view">
+                            View
+                        </a>
+
+                        <a asp-action="EditCourse"
+                           asp-controller="Course"
+                           asp-route-id="@course.courseId"
+                           class="btn edit">
+                            Edit
+                        </a>
+
+                        <form method="post"
+                              asp-action="DeleteCourse"
+                              asp-controller="Course">
+
+                            <input type="hidden" name="id" value="@course.courseId" />
+
+                            <button class="btn delete">
+                                Delete
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>

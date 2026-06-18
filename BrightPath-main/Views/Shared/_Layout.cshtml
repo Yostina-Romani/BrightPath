@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BrightPath</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+            :root {
+                --blue: #38bdf8;
+                --pink: #f9a8d4;
+                --dark: #0b1220;
+                --glass: rgba(255,255,255,0.06);
+            }
+
+            body {
+                margin: 0;
+                font-family: 'Segoe UI',Tahoma;
+                background: var(--dark);
+                color: #e2e8f0;
+            }
+
+            /* NAVBAR */
+            .navbar {
+                background: linear-gradient(135deg, rgba(56,189,248,0.15), rgba(249,168,212,0.10)) !important;
+                backdrop-filter: blur(12px);
+                border-bottom: 1px solid rgba(125,211,252,0.2);
+                padding: 12px 0;
+            }
+
+            .navbar-brand {
+                font-weight: 800;
+                font-size: 22px;
+                background: linear-gradient(135deg,var(--blue),var(--pink));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .nav-link {
+                color: #cbd5e1 !important;
+                margin-right: 10px;
+                transition: .3s;
+                position: relative;
+            }
+
+                .nav-link:hover {
+                    color: white !important;
+                }
+
+                .nav-link::after {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    bottom: -3px;
+                    width: 0%;
+                    height: 2px;
+                    background: linear-gradient(135deg,var(--blue),var(--pink));
+                    transition: .3s;
+                }
+
+                .nav-link:hover::after {
+                    width: 100%;
+                }
+
+            /* BUTTONS */
+            .auth-buttons a,
+            .auth-buttons button {
+                margin-left: 10px;
+                border-radius: 12px;
+                padding: 7px 14px;
+                border: none;
+                font-size: 14px;
+                transition: .3s;
+            }
+
+            .login {
+                background: linear-gradient(135deg,var(--blue),var(--pink));
+                color: white !important;
+            }
+
+            .register {
+                background: transparent;
+                border: 1px solid var(--blue);
+                color: white !important;
+            }
+
+                .register:hover {
+                    background: rgba(56,189,248,0.15);
+                }
+
+            .logout {
+                background: linear-gradient(135deg,#f87171,#fb7185);
+                color: white;
+            }
+
+                .logout:hover {
+                    transform: translateY(-2px);
+                }
+
+            /* CONTENT WRAPPER */
+            .container {
+                padding-top: 30px;
+            }
+
+            main {
+                animation: fadeIn .4s ease-in-out;
+            }
+
+            keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* FOOTER */
+            footer {
+                margin-top: 60px;
+                padding: 25px 0;
+                text-align: center;
+                background: linear-gradient(135deg, rgba(56,189,248,0.10), rgba(249,168,212,0.10));
+                border-top: 1px solid rgba(125,211,252,0.2);
+                color: #94a3b8;
+            }
+
+                footer strong {
+                    background: linear-gradient(135deg,var(--blue),var(--pink));
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+
+            /* MOBILE */
+            media(max - width:768px) {
+                .auth-buttons {
+                    margin-top: 10px;
+                }
+            }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light">
+            <div class="container-fluid">
+
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    🚀 BrightPath
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a>
+                            </li>
+                        }
+
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Student" asp-action="Mycourses">My Courses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Student" asp-action="StudentDashboard">My Dashboard</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Profile" asp-action="MyProfile">Profile</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Student" asp-action="CourseOfGrade">
+                                    Courses by Grade
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+
+                    <div class="auth-buttons">
+
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <a class="login" asp-controller="Student" asp-action="Login">Login</a>
+                            <a class="register" asp-controller="Student" asp-action="Register">Sign Up</a>
+                        }
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-controller="Student" asp-action="Logout" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button class="logout" type="submit">Logout</button>
+                            </form>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer>
+        © 2026 - <strong>BrightPath</strong> - Learn. Build. Grow.
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html> 

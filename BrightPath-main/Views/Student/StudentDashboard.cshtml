@@ -1,0 +1,188 @@
+﻿@model BrightPath.ViewModels.StudentDashboardViewModel
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma;
+        background: #0b1220;
+        color: #e2e8f0;
+    }
+
+    .dashboard {
+        max-width: 1100px;
+        margin: auto;
+        padding: 40px 20px;
+    }
+
+    /* HEADER */
+    h2 {
+        font-size: 34px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #38bdf8, #f9a8d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 25px;
+    }
+
+    h3.section-title {
+        margin-top: 35px;
+        margin-bottom: 20px;
+        font-size: 20px;
+        color: #cbd5e1;
+    }
+
+    /* STATS */
+    .row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(56,189,248,0.15);
+        border-radius: 20px;
+        padding: 25px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        transition: .3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(249,168,212,0.25), transparent);
+            top: -30px;
+            right: -30px;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(56,189,248,0.12);
+        }
+
+        .card h3 {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #38bdf8, #f9a8d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+    /* EMPTY */
+    .empty {
+        padding: 20px;
+        border-radius: 12px;
+        background: rgba(249,168,212,0.08);
+        border: 1px solid rgba(249,168,212,0.2);
+        color: #fbcfe8;
+        margin-top: 20px;
+    }
+
+    /* COURSE CARD */
+    .course-card {
+        margin-top: 15px;
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(56,189,248,0.12);
+        transition: .3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(249,168,212,0.4);
+            box-shadow: 0 15px 35px rgba(249,168,212,0.08);
+        }
+
+        .course-card h4 {
+            margin: 0;
+            font-size: 18px;
+            color: #fbcfe8;
+        }
+
+        .course-card p {
+            margin: 6px 0 12px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+    /* PROGRESS BAR */
+    .progress {
+        width: 100%;
+        height: 10px;
+        background: rgba(255,255,255,0.06);
+        border-radius: 50px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(135deg, #38bdf8, #f9a8d4);
+        border-radius: 50px;
+        transition: width 0.6s ease;
+        text-align: right;
+        font-size: 10px;
+        padding-right: 6px;
+        color: white;
+        line-height: 10px;
+    }
+</style>
+
+<div class="dashboard">
+
+    <h2>Welcome @Model.StudentName</h2>
+
+    <div class="row">
+
+        <div class="card">
+            <h3>@Model.CourseCount</h3>
+            <p>Enrolled Courses</p>
+        </div>
+
+        <div class="card">
+            <h3>@Model.LessonCount</h3>
+            <p>Total Lessons</p>
+        </div>
+
+    </div>
+
+    <h3 class="section-title">My Courses</h3>
+
+    @if (Model.MyCourses == null || !Model.MyCourses.Any())
+    {
+        <div class="empty">No Courses Available</div>
+    }
+    else
+    {
+        @foreach (var course in Model.MyCourses)
+        {
+            <div class="course-card">
+
+                <h4>@course.CourseName</h4>
+                <p>@course.TeacherName</p>
+
+                <div class="progress">
+                    <div class="progress-bar"
+                         style="width:@course.Progress%">
+                        @course.Progress%
+                    </div>
+                </div>
+
+            </div>
+        }
+    }
+
+</div>

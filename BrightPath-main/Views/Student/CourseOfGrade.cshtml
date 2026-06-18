@@ -1,0 +1,170 @@
+﻿@model List<Course>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma;
+        background: #0b1220;
+        color: #e2e8f0;
+    }
+
+    .page {
+        max-width: 1200px;
+        margin: auto;
+        padding: 40px 20px;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 36px;
+        font-weight: 900;
+        margin-bottom: 30px;
+        background: linear-gradient(135deg, #38bdf8, #f9a8d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 22px;
+    }
+
+    .card {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(56,189,248,0.2);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: .4s;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 70px rgba(249,168,212,0.25);
+        }
+
+    .img-box {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: .5s;
+        }
+
+    .card:hover img {
+        transform: scale(1.1);
+    }
+
+    .badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: linear-gradient(135deg,#38bdf8,#f9a8d4);
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .body {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 18px;
+        margin: 0 0 8px;
+        color: #fbcfe8;
+    }
+
+    p {
+        font-size: 13px;
+        color: #94a3b8;
+        margin: 5px 0;
+        line-height: 1.5;
+    }
+
+    .price {
+        margin-top: 10px;
+        font-weight: 800;
+        color: #38bdf8;
+        font-size: 15px;
+    }
+
+    .empty {
+        text-align: center;
+        padding: 80px;
+        color: #94a3b8;
+    }
+</style>
+
+<div class="page">
+
+    <div class="title">📚 Available Courses</div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="grid">
+            @foreach (var course in Model)
+            {
+                <a asp-controller="Course"
+                   asp-action="CourseDetails"
+                   asp-route-id="@course.courseId"
+                   style="text-decoration:none;color:inherit;">
+
+                    <div class="card">
+
+                        <div class="img-box">
+
+                            @if (!string.IsNullOrEmpty(course.courseImage))
+                            {
+                                <img src="@course.courseImage" alt="@course.courseName" />
+                            }
+                            else
+                            {
+                                <img src="/images/default-course.jpg" alt="Course Image" />
+                            }
+
+                            <span class="badge">Course</span>
+
+                        </div>
+
+                        <div class="body">
+
+                            <h1>@course.courseName</h1>
+
+                            <p>👨‍🏫 @course.teacherName</p>
+
+                            <p>
+                                @(course.courseDescription.Length > 120
+                                    ? course.courseDescription.Substring(0, 120) + "..."
+                                    : course.courseDescription)
+                            </p>
+
+                            <div class="price">
+                                💰 @course.coursePrice EGP
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="empty">
+            <h3>😕 No Courses Available</h3>
+            <p>Please check back later</p>
+        </div>
+    }
+
+</div>

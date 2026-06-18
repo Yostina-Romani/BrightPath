@@ -1,0 +1,133 @@
+﻿@model BrightPath.ViewModels.ProfileViewModel
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma;
+        background: #0b1220;
+        color: #e2e8f0;
+    }
+
+    .page {
+        min-height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+    }
+
+    .card {
+        width: 420px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(56,189,248,0.2);
+        border-radius: 22px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+        transition: .3s;
+    }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+    .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #38bdf8;
+        margin-bottom: 15px;
+        box-shadow: 0 0 25px rgba(56,189,248,0.3);
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 5px;
+        color: #fbcfe8;
+    }
+
+    h2 {
+        font-size: 15px;
+        color: #94a3b8;
+        margin-bottom: 20px;
+    }
+
+    .links {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 15px;
+    }
+
+    a {
+        display: inline-block;
+        padding: 12px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: .3s;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg,#38bdf8,#f9a8d4);
+        color: white;
+    }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+
+    .btn-outline {
+        border: 1px solid #38bdf8;
+        color: #38bdf8;
+    }
+
+        .btn-outline:hover {
+            background: rgba(56,189,248,0.1);
+        }
+
+    .alert {
+        background: rgba(34,197,94,0.15);
+        color: #4ade80;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        border: 1px solid rgba(34,197,94,0.3);
+        text-align: center;
+    }
+</style>
+
+<div class="page">
+
+    <div class="card">
+
+        @if (TempData["success"] != null)
+        {
+            <div class="alert">
+                @TempData["success"]
+            </div>
+        }
+
+        <img class="avatar" src="@Model.imageurl" />
+
+        <h1>@Model.Name</h1>
+        <h2>@Model.Email</h2>
+
+        <div class="links">
+
+            <a asp-action="Mycourses" asp-controller="Student"
+               class="btn-primary">
+                📚 My Courses
+            </a>
+
+            <a asp-action="EditProfile" asp-controller="Profile"
+               class="btn-outline">
+                ✏️ Edit Profile
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
